@@ -11,21 +11,20 @@ class Hospede:
         self.td = td
         self.thread = threading.Thread(target=self.executar)
         self.status = "Descansando"
+        self.tempo_descansando = 0
 
     def executar(self):
         global semaforo, canal_atual
         while True:
+            self.status = "Bloqueado"
             atualizar_interface()
             semaforo.acquire()
-            atualizar_interface()
             canal_atual = self.canal
             atualizar_interface()
             self.status = "Assistindo TV"
             atualizar_interface()
             time.sleep(self.ttv)
-            atualizar_interface()
             semaforo.release()
-            atualizar_interface()
             self.status = "Descansando"
             atualizar_interface()
             time.sleep(self.td)
