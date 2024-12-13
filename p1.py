@@ -1,6 +1,8 @@
 import threading
 import tkinter as tk
+from tkinter import ttk
 import time
+import datetime
 
 class Hospede:
     def __init__(self, id, canal, ttv, td):
@@ -11,21 +13,24 @@ class Hospede:
         self.td = td
         self.thread = threading.Thread(target=self.executar)
         self.status = "Descansando"
-        self.tempo_descansando = 0
+        self.log = []
 
     def executar(self):
         global semaforo, canal_atual
         while True:
             self.status = "Bloqueado"
+            self.log.append((time.time(), "Bloqueado"))
             atualizar_interface()
             semaforo.acquire()
             canal_atual = self.canal
             atualizar_interface()
             self.status = "Assistindo TV"
+            self.log.append((time.time(), "Assistindo TV"))
             atualizar_interface()
             time.sleep(self.ttv)
             semaforo.release()
             self.status = "Descansando"
+            self.log.append((time.time(), "Descansando"))
             atualizar_interface()
             time.sleep(self.td)
             atualizar_interface()
@@ -121,12 +126,44 @@ def remover_hospede():
         hospede_remover.thread.join()  # Aguarda a thread terminar
         atualizar_interface()
 
+def exibir_log(hospede):
+    for evento in hospede.log:
+        timestamp, status = evento
+        data_hora = datetime.datetime.fromtimestamp(timestamp)
+        print(f"{data_hora:%Y-%m-%d %H:%M:%S} - {status}")
+
+# Botão para exibir log na interface
+def exibir_log_interface():
+    index = lista_hospedes.curselection()
+    if index:
+        hospede_selecionado = hospedes[index[0]]
+        exibir_log(hospede_selecionado)
+
 # Função para atualizar a interface
 def atualizar_interface():
     lista_hospedes.delete(0, tk.END)
     for hospede in hospedes:
         lista_hospedes.insert(tk.END, f"ID: {hospede.id}, Canal Preferido: {hospede.canalPreferido}, Ttv: {hospede.ttv}, Td: {hospede.td}, Status: {hospede.status}")
     label_canal['text'] = f"Canal atual: {canal_atual}"
+
+def exibir_log_interface():
+    index = lista_hospedes.curselection()
+    if index:
+        hospede_selecionado = hospedes[index[0]]
+
+        # Cria uma nova janela para o log
+        janela_log = tk.Toplevel(root)
+        janela_log.title(f"Log do Hóspede {hospede_selecionado.id}")
+
+        # Lista para exibir o log
+        lista_log = tk.Listbox(janela_log, width = 50)
+        lista_log.pack()
+
+        # Preenche a lista com os dados do log
+        for evento in hospede_selecionado.log:
+            timestamp, status = evento
+            data_hora = datetime.datetime.fromtimestamp(timestamp)
+            lista_log.insert(tk.END, f"{data_hora:%Y-%m-%d %H:%M:%S} - {status}")
 
 # Interface gráfica
 root = tk.Tk()
@@ -143,6 +180,8 @@ botao_criar = tk.Button(root, text="Criar Hóspede", command=criar_hospede)
 botao_criar.pack()
 botao_remover = tk.Button(root, text="Remover Hóspede", command=remover_hospede)
 botao_remover.pack()
+botao_log = tk.Button(root, text="Ver Log", command=exibir_log_interface)
+botao_log.pack()
 
 # Atualização automática da interface
 atualizar_interface()
