@@ -13,10 +13,11 @@ class Hospede:
         self.thread = threading.Thread(target=self.executar)
         self.status = "Descansando"
         self.log = []
+        self.parar = False
 
     def executar(self):
         global semaforo, canal_atual
-        while True:
+        while not self.parar:
             self.status = "Bloqueado"
             self.log.append((time.time(), "Bloqueado"))
             atualizar_interface()
@@ -122,8 +123,19 @@ def remover_hospede():
     if index:
         hospede_remover = hospedes[index[0]]
         hospedes.remove(hospede_remover)
-        hospede_remover.thread.join()  # Aguarda a thread terminar
-        atualizar_interface()
+        hospede_remover.parar = True
+
+        # Tentativa de interromper a thread de forma limpa
+        try:
+            hospede_remover.thread.join(timeout=1)  # Aguarda no máximo 1 segundo
+        except TimeoutError:
+            print(f"Thread do hóspede {hospede_remover.id} não pôde ser interrompida imediatamente.")
+
+        # Atualiza a interface de forma assíncrona
+        atualizar_interface_assincrona()
+
+def atualizar_interface_assincrona():
+    root.after(100, atualizar_interface)
 
 def exibir_log(hospede):
     for evento in hospede.log:
