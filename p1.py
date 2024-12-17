@@ -65,8 +65,7 @@ def inicializar():
 
     entrada = tk.Entry(dialogo)
     entrada.pack()
-    frame0 = tk.Frame(dialogo, pady=5)
-    botao = tk.Button(frame0, text="Confirmar", command=obter_max_canais)
+    botao = tk.Button(dialogo, text="Confirmar", command=obter_max_canais)
     botao.pack()
 
     dialogo.wait_window()
