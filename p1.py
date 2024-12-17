@@ -65,8 +65,8 @@ def inicializar():
 
     entrada = tk.Entry(dialogo)
     entrada.pack()
-
-    botao = tk.Button(dialogo, text="Confirmar", command=obter_max_canais)
+    frame0 = tk.Frame(dialogo, pady=5)
+    botao = tk.Button(frame0, text="Confirmar", command=obter_max_canais)
     botao.pack()
 
     dialogo.wait_window()
@@ -74,7 +74,10 @@ def inicializar():
 inicializar()
 
 def criar_hospede():
-    top = tk.Toplevel()
+    frame0=tk.Frame(root, padx=400)
+    
+    top = tk.Toplevel(frame0)
+    frame0.pack()
     top.title("Adicionar Novo Hóspede")
 
     # Labels e campos de entrada
@@ -181,17 +184,23 @@ root = tk.Tk()
 root.title("Simulação da Televisão")
 
 # Labels e lista
-label_canal = tk.Label(root, text="Canal atual: 0")
+label_canal = tk.Label(root, text="Canal atual: 0", width=70)
 label_canal.pack()
 lista_hospedes = tk.Listbox(root, width=75)
 lista_hospedes.pack()
 
 # Botões
-botao_criar = tk.Button(root, text="Criar Hóspede", command=criar_hospede)
+frame1 = tk.Frame(root, padx=15, pady=5) 
+botao_criar = tk.Button(frame1, text="Criar Hóspede", command=criar_hospede, width="15")
+frame1.pack()
 botao_criar.pack()
-botao_remover = tk.Button(root, text="Remover Hóspede", command=remover_hospede)
+
+botao_remover = tk.Button(root, text="Remover Hóspede", command=remover_hospede, width="15")
 botao_remover.pack()
-botao_log = tk.Button(root, text="Ver Log", command=exibir_log_interface)
+
+frame2= tk.Frame(root, padx=15, pady=5)
+botao_log = tk.Button(frame2, text="Ver Log", command=exibir_log_interface, width="15")
+frame2.pack()
 botao_log.pack()
 
 # Atualização automática da interface
