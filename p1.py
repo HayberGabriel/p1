@@ -16,28 +16,29 @@ class Hospede:
         self.parar = False
 
     def executar(self):
-        global semaforo, canal_atual
         while not self.parar:
-            self.status = "Bloqueado"
-            self.log.append((time.time(), "Bloqueado"))
-            atualizar_interface()
             semaforo.acquire()
             canal_atual = self.canal
-            atualizar_interface()
-            self.status = "Assistindo TV"
-            self.log.append((time.time(), "Assistindo TV"))
-            atualizar_interface()
-            time.sleep(self.ttv)
-            semaforo.release()
-            self.status = "Descansando"
-            self.log.append((time.time(), "Descansando"))
-            atualizar_interface()
-            time.sleep(self.td)
-            atualizar_interface()
+            if (canal_atual == self.canal):
+                canal_atual = self.canal
+                atualizar_interface()
+                self.status = "Assistindo TV"
+                self.log.append((time.time(), "Assistindo TV"))
+                atualizar_interface()
+                time.sleep(self.ttv)
+                semaforo.release()
+                self.status = "Descansando"
+                self.log.append((time.time(), "Descansando"))
+                atualizar_interface()
+                time.sleep(self.td)
+            else:
+                self.status = "Bloqueado"
+                atualizar_interface()
+                semaforo.acquire()
 
 # Variáveis globais
-semaforo = threading.Semaphore(1)
-canal_atual = 0
+semaforo = threading.Semaphore(2)
+canal_atual = 1
 hospedes = []
 max_canais = 0
 # Interface gráfica
