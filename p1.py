@@ -40,6 +40,10 @@ semaforo = threading.Semaphore(1)
 canal_atual = 0
 hospedes = []
 max_canais = 0
+# Interface gráfica
+root = tk.Tk()
+root.title("Simulação da Televisão")
+
 
 def inicializar():
     global max_canais
@@ -51,24 +55,24 @@ def inicializar():
             if valor > 0:
                 global max_canais
                 max_canais = valor
-                dialogo.destroy()  # Fecha a caixa de diálogo
+                root.destroy()  # Fecha a caixa de diálogo
             else:
                 tk.messagebox.showerror("Erro", "O número de canais deve ser maior que zero.")
         except ValueError:
             tk.messagebox.showerror("Erro", "Por favor, insira um número inteiro válido.")
 
-    dialogo = tk.Toplevel()
-    dialogo.title("Configuração de Canais")
+  
+    root.title("Configuração de Canais")
 
-    label = tk.Label(dialogo, text="Digite o número máximo de canais:")
+    label = tk.Label(root, text="Digite o número máximo de canais:")
     label.pack()
 
-    entrada = tk.Entry(dialogo)
+    entrada = tk.Entry(root)
     entrada.pack()
-    botao = tk.Button(dialogo, text="Confirmar", command=obter_max_canais)
+    botao = tk.Button(root, text="Confirmar", command=obter_max_canais)
     botao.pack()
 
-    dialogo.wait_window()
+    root.wait_window()
 
 inicializar()
 
@@ -82,7 +86,7 @@ def criar_hospede():
     entry_id = tk.Entry(top)
     entry_id.pack()
 
-    label_canal = tk.Label(top, text="Canal:")
+    label_canal = tk.Label(top, text=f"O canal deve estar entre 1 e {max_canais}:")
     label_canal.pack()
     entry_canal = tk.Entry(top)
     entry_canal.pack()
