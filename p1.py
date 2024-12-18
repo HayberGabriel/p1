@@ -63,12 +63,14 @@ def inicializar():
 
   
     root.title("Configuração de Canais")
+    root.geometry('400x300')
 
     label = tk.Label(root, text="Digite o número máximo de canais:")
     label.pack()
 
     entrada = tk.Entry(root)
     entrada.pack()
+
     botao = tk.Button(root, text="Confirmar", command=obter_max_canais)
     botao.pack()
 
@@ -78,6 +80,7 @@ inicializar()
 
 def criar_hospede():
     top = tk.Toplevel()
+    top.geometry('400x300')
     top.title("Adicionar Novo Hóspede")
 
     # Labels e campos de entrada
