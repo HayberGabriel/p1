@@ -71,7 +71,9 @@ def inicializar():
     entrada = tk.Entry(root)
     entrada.pack()
 
-    botao = tk.Button(root, text="Confirmar", command=obter_max_canais)
+    frame = tk.Frame(root, pady=5)
+    frame.pack()
+    botao = tk.Button(frame, text="Confirmar", command=obter_max_canais)
     botao.pack()
 
     root.wait_window()
@@ -94,12 +96,12 @@ def criar_hospede():
     entry_canal = tk.Entry(top)
     entry_canal.pack()
 
-    label_ttv = tk.Label(top, text="Tempo na TV:")
+    label_ttv = tk.Label(top, text="Tempo na TV (em segundos):")
     label_ttv.pack()
     entry_ttv = tk.Entry(top)
     entry_ttv.pack()
 
-    label_td = tk.Label(top, text="Tempo de descanso:")
+    label_td = tk.Label(top, text="Tempo de descanso (em segundos):")
     label_td.pack()
     entry_td = tk.Entry(top)
     entry_td.pack()
