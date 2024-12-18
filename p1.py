@@ -106,8 +106,6 @@ def criar_hospede():
         try:
             id = int(entry_id.get())
             canal = int(entry_canal.get())
-            if canal < 1 or canal > max_canais:
-                tk.simpledialog.messagebox.showerror("Erro", f"O canal deve estar entre 1 e {max_canais}.")
             ttv = int(entry_ttv.get())
             td = int(entry_td.get())
             novo_hospede = Hospede(id, canal, ttv, td)
