@@ -73,10 +73,7 @@ def inicializar():
 inicializar()
 
 def criar_hospede():
-    frame0=tk.Frame(root, padx=400)
-    
-    top = tk.Toplevel(frame0)
-    frame0.pack()
+    top = tk.Toplevel()
     top.title("Adicionar Novo Hóspede")
 
     # Labels e campos de entrada
