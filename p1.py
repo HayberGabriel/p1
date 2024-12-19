@@ -64,7 +64,7 @@ def inicializar():
 
   
     root.title("Configuração de Canais")
-    root.geometry('400x300')
+    root.geometry('300x100')
 
     label = tk.Label(root, text="Digite o número máximo de canais:")
     label.pack()
